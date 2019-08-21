@@ -8,10 +8,6 @@
     "eslint:recommended",
     "plugin:react/recommended"
   ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -50,7 +46,6 @@
       "1tbs"
     ],
     "callback-return": "error",
-    "camelcase": "error",
     "capitalized-comments": "off",
     "class-methods-use-this": "error",
     "comma-dangle": "off",
@@ -155,7 +150,6 @@
     "no-caller": "error",
     "no-catch-shadow": "error",
     "no-confusing-arrow": "error",
-    "no-console": "error",
     "no-const-assign": "error",
     "no-continue": "error",
     "no-div-regex": "error",
