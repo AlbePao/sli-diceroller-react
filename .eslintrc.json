@@ -47,7 +47,14 @@
     ],
     "callback-return": "error",
     "capitalized-comments": "off",
-    "class-methods-use-this": "error",
+    "class-methods-use-this": [
+      "error",
+      {
+        "exceptMethods": [
+          "getCurrentDate"
+        ]
+      }
+    ],
     "comma-dangle": "off",
     "comma-spacing": [
       "error",
@@ -184,7 +191,6 @@
     "no-native-reassign": "error",
     "no-negated-condition": "error",
     "no-negated-in-lhs": "error",
-    "no-nested-ternary": "error",
     "no-new": "error",
     "no-new-func": "error",
     "no-new-object": "error",
