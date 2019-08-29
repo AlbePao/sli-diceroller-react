@@ -107,7 +107,7 @@ class App extends Component {
           </Navbar.Collapse>
         </Navbar>
         <Container className="mt-4">
-          <h1>Sonic Legacy Italia GdR Lancio dadi</h1>
+          <h1 className="text-center">Lancio dadi GdR</h1>
           <hr />
           <Row>
             <Col>
