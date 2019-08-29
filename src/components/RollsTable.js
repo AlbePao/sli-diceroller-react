@@ -1,12 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
+import Spinner from 'react-bootstrap/Spinner';
 
-const RollsTable = () => (
+const RollsTable = props => (
   <Row>
     <Col>
-      <Table responsive className="mt-3">
+      <Table responsive hover className="mt-3">
         <thead>
           <tr>
             <th>Data lancio</th>
@@ -22,46 +24,47 @@ const RollsTable = () => (
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>19/08/2019 14:44</td>
-            <td>Lorem ipsum</td>
-            <td>Admiral</td>
-            <td>Velrog</td>
-            <td>2 4</td>
-            <td>3 1 5</td>
-            <td></td>
-            <td>9</td>
-            <td>12</td>
-            <td>15</td>
-          </tr>
-          <tr>
-            <td>19/08/2019 14:44</td>
-            <td>Lorem ipsum</td>
-            <td>Admiral</td>
-            <td>Velrog</td>
-            <td>2 4</td>
-            <td>3 1 5</td>
-            <td></td>
-            <td>9</td>
-            <td>12</td>
-            <td>15</td>
-          </tr>
-          <tr>
-            <td>19/08/2019 14:44</td>
-            <td>Lorem ipsum</td>
-            <td>Admiral</td>
-            <td>Velrog</td>
-            <td>2 4</td>
-            <td>3 1 5</td>
-            <td></td>
-            <td>9</td>
-            <td>12</td>
-            <td>15</td>
-          </tr>
+          {props.rollsListLoading ? (
+            <tr>
+              <td colSpan="10" className="text-center py-4">
+                <Spinner animation="border" variant="primary" />
+              </td>
+            </tr>
+          ) : (
+            props.rollsList.length === 0 ? (
+              <tr>
+                <td colSpan="10" className="text-center py-4">
+                  Nessun lancio di dadi presente
+                </td>
+              </tr>
+            ) : (
+              props.rollsList.map(
+                (roll, rollIndex) => (
+                  <tr key={rollIndex}>
+                    <td>{roll.rollData.date}</td>
+                    <td>{roll.rollData.reason}</td>
+                    <td>{roll.rollData.user}</td>
+                    <td>{roll.rollData.character}</td>
+                    <td>{roll.rollResult.d4.join(' ')}</td>
+                    <td>{roll.rollResult.d6.join(' ')}</td>
+                    <td>{roll.rollResult.d8.join(' ')}</td>
+                    <td>{roll.rollResult.d10.join(' ')}</td>
+                    <td>{roll.rollResult.d12.join(' ')}</td>
+                    <td>{roll.rollResult.d20.join(' ')}</td>
+                  </tr>
+                )
+              )
+            )
+          )}
         </tbody>
       </Table>
     </Col>
   </Row>
 );
+
+RollsTable.propTypes = {
+  rollsList: PropTypes.array.isRequired,
+  rollsListLoading: PropTypes.bool.isRequired,
+};
 
 export default RollsTable;

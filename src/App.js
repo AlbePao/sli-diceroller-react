@@ -25,6 +25,7 @@ class App extends Component {
       rollResult: {},
       rollData: {},
       rollsList: [],
+      rollsListLoading: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -134,15 +135,16 @@ class App extends Component {
             handleChange={this.handleChange}
             handleSubmit={this.submitRoll}
           />
-          {this.state.rollResult ? (
-            <RollResult
-              rollData={this.state.rollData}
-              rollResult={this.state.rollResult}
-            />
-          ) : (
-            ''
-          )}
-          <RollsTable />
+
+          <RollResult
+            rollData={this.state.rollData}
+            rollResult={this.state.rollResult}
+          />
+
+          <RollsTable
+            rollsList={this.state.rollsList}
+            rollsListLoading={this.state.rollsListLoading}
+          />
         </Container>
       </>
     );
