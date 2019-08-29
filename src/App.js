@@ -44,6 +44,21 @@ class App extends Component {
     this.setState({ [event.target.id]: event.target.value });
   }
 
+  getCurrentDate() {
+    const currentDate = new Date();
+    const prependZero = value => (value < 10 ? `0${value}` : value);
+
+    const date = prependZero(currentDate.getDate());
+    const month = prependZero(currentDate.getMonth() + 1);
+    const year = prependZero(currentDate.getFullYear());
+
+    const hour = prependZero(currentDate.getHours());
+    const minute = prependZero(currentDate.getMinutes());
+    const second = prependZero(currentDate.getSeconds());
+
+    return `${date}/${month}/${year} ${hour}:${minute}:${second}`;
+  }
+
   submitRoll() {
     const dieTypes = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20'];
     const rolls = {};
@@ -63,6 +78,7 @@ class App extends Component {
     this.setState(prevState => ({
       rollResult: rolls,
       rollData: {
+        date: this.getCurrentDate(),
         reason: prevState.reason,
         user: prevState.user,
         character: prevState.character,
