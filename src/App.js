@@ -64,6 +64,11 @@ class App extends Component {
     const dieTypes = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20'];
     const rolls = {};
 
+    this.setState({
+      rollResult: {},
+      rollData: {},
+    });
+
     dieTypes.forEach(dieType => {
       rolls[dieType] = [];
 
