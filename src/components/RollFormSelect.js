@@ -9,6 +9,7 @@ const RollFormSelect = props => (
       <Form.Label>{props.dieType}</Form.Label>
       <Form.Control
         required
+        value={props.value}
         onChange={props.handleChange}
         as="select"
         style={{
@@ -39,6 +40,7 @@ const RollFormSelect = props => (
 
 RollFormSelect.propTypes = {
   dieType: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
 };
 

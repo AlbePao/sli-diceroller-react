@@ -13,22 +13,12 @@ class App extends Component {
     super();
 
     this.state = {
-      reason: '',
-      user: '',
-      character: '',
-      d4: null,
-      d6: null,
-      d8: null,
-      d10: null,
-      d12: null,
-      d20: null,
-      rollResult: {},
       rollData: {},
+      rollResult: {},
       rollsList: [],
       rollsListLoading: false,
     };
 
-    this.handleChange = this.handleChange.bind(this);
     this.submitRoll = this.submitRoll.bind(this);
   }
 
@@ -41,66 +31,37 @@ class App extends Component {
     this.setState({ rollsList: [] });
   }
 
-  handleChange(event) {
-    this.setState({ [event.target.id]: event.target.value });
-  }
 
-  getCurrentDate() {
-    const currentDate = new Date();
-    const prependZero = value => (value < 10 ? `0${value}` : value);
-
-    const date = prependZero(currentDate.getDate());
-    const month = prependZero(currentDate.getMonth() + 1);
-    const year = prependZero(currentDate.getFullYear());
-
-    const hour = prependZero(currentDate.getHours());
-    const minute = prependZero(currentDate.getMinutes());
-    const second = prependZero(currentDate.getSeconds());
-
-    return `${date}/${month}/${year} ${hour}:${minute}:${second}`;
-  }
-
-  submitRoll() {
+  submitRoll(rollData) {
     const dieTypes = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20'];
-    const rolls = {};
+    const rollResult = {};
 
     this.setState({
-      rollResult: {},
       rollData: {},
+      rollResult: {},
     });
 
     dieTypes.forEach(dieType => {
-      rolls[dieType] = [];
+      rollResult[dieType] = [];
 
-      for (let i = 0; i < this.state[dieType]; i += 1) {
+      for (let i = 0; i < rollData[dieType]; i += 1) {
         const roll =
           Math.floor(
             Math.random() * parseInt(dieType.substr(1), 10),
           ) + 1;
-        rolls[dieType].push(roll);
+        rollResult[dieType].push(roll);
       }
     });
 
-    this.setState(prevState => ({
-      rollResult: rolls,
-      rollData: {
-        date: this.getCurrentDate(),
-        reason: prevState.reason,
-        user: prevState.user,
-        character: prevState.character,
-        d4: prevState.d4,
-        d6: prevState.d6,
-        d8: prevState.d8,
-        d10: prevState.d10,
-        d12: prevState.d12,
-        d20: prevState.d20,
-      },
-    }));
 
     /**
      * TODO: make a roll, save result to Firebase, clear form and getRolls()
      * TODO: handle Firebase error and show error alert
      */
+    this.setState({
+      rollData,
+      rollResult,
+    });
   }
 
   render() {
@@ -136,10 +97,7 @@ class App extends Component {
               <p>Lorem ipsum dolor sit amet, dice roller overview</p>
             </Col>
           </Row>
-          <RollForm
-            handleChange={this.handleChange}
-            handleSubmit={this.submitRoll}
-          />
+          <RollForm submitRoll={this.submitRoll} />
 
           <RollResult
             rollData={this.state.rollData}
