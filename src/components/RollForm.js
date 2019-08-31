@@ -6,23 +6,25 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import RollFormSelect from './RollFormSelect';
 
+const defaultState = {
+  reason: '',
+  user: '',
+  character: '',
+  d4: '',
+  d6: '',
+  d8: '',
+  d10: '',
+  d12: '',
+  d20: '',
+  isValidated: false,
+  isSubmitting: false,
+};
+
 class RollForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      reason: '',
-      user: '',
-      character: '',
-      d4: '',
-      d6: '',
-      d8: '',
-      d10: '',
-      d12: '',
-      d20: '',
-      isValidated: false,
-      isSubmitting: false,
-    };
+    this.state = defaultState;
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -48,6 +50,8 @@ class RollForm extends Component {
   }
 
   handleSubmit(event) {
+    this.setState({ isValidated: true });
+
     event.preventDefault();
     event.stopPropagation();
 
@@ -66,10 +70,9 @@ class RollForm extends Component {
         d12: this.state.d12,
         d20: this.state.d20,
       });
-      // TODO: form reset
-    }
 
-    this.setState({ isValidated: true });
+      this.setState(defaultState);
+    }
   }
 
   render() {
