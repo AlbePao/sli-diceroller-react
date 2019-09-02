@@ -13,7 +13,6 @@ class App extends Component {
     super();
 
     this.state = {
-      rollData: {},
       rollResult: {},
       rollsList: [],
       rollsListLoading: false,
@@ -34,22 +33,21 @@ class App extends Component {
 
   submitRoll(rollData) {
     const dieTypes = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20'];
-    const rollResult = {};
+    const rollResults = {};
 
     this.setState({
-      rollData: {},
       rollResult: {},
     });
 
     dieTypes.forEach(dieType => {
-      rollResult[dieType] = [];
+      rollResults[dieType] = [];
 
       for (let i = 0; i < rollData[dieType]; i += 1) {
         const roll =
           Math.floor(
             Math.random() * parseInt(dieType.substr(1), 10),
           ) + 1;
-        rollResult[dieType].push(roll);
+        rollResults[dieType].push(roll);
       }
     });
 
@@ -59,8 +57,10 @@ class App extends Component {
      * TODO: handle Firebase error and show error alert
      */
     this.setState({
-      rollData,
-      rollResult,
+      rollResult: {
+        rollData,
+        rollResults,
+      },
     });
   }
 
@@ -99,10 +99,7 @@ class App extends Component {
           </Row>
           <RollForm submitRoll={this.submitRoll} />
 
-          <RollResult
-            rollData={this.state.rollData}
-            rollResult={this.state.rollResult}
-          />
+          <RollResult rollResult={this.state.rollResult} />
 
           <RollsTable
             rollsList={this.state.rollsList}

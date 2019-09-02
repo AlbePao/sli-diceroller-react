@@ -45,12 +45,12 @@ const RollsTable = props => (
                     <td>{roll.rollData.reason}</td>
                     <td>{roll.rollData.user}</td>
                     <td>{roll.rollData.character}</td>
-                    <td>{roll.rollResult.d4.join(' ')}</td>
-                    <td>{roll.rollResult.d6.join(' ')}</td>
-                    <td>{roll.rollResult.d8.join(' ')}</td>
-                    <td>{roll.rollResult.d10.join(' ')}</td>
-                    <td>{roll.rollResult.d12.join(' ')}</td>
-                    <td>{roll.rollResult.d20.join(' ')}</td>
+                    <td>{roll.rollResults.d4.join(' ')}</td>
+                    <td>{roll.rollResults.d6.join(' ')}</td>
+                    <td>{roll.rollResults.d8.join(' ')}</td>
+                    <td>{roll.rollResults.d10.join(' ')}</td>
+                    <td>{roll.rollResults.d12.join(' ')}</td>
+                    <td>{roll.rollResults.d20.join(' ')}</td>
                   </tr>
                 )
               )
