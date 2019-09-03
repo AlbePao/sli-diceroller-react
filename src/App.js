@@ -4,6 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 import RollForm from './components/RollForm';
 import RollResult from './components/RollResult';
 import RollsTable from './components/RollsTable';
@@ -16,9 +17,12 @@ class App extends Component {
     this.state = {
       rollResult: {},
       rollsList: [],
-      rollsListLoading: false,
+      rollsListLoading: true,
+      rollsListLastPage: false,
+      rollsListLastId: '__firstPage__',
     };
 
+    this.getRolls = this.getRolls.bind(this);
     this.submitRoll = this.submitRoll.bind(this);
   }
 
@@ -27,10 +31,40 @@ class App extends Component {
   }
 
   getRolls() {
-    // TODO: get rolls from Firebase and save them into state, beware of pagination
-    this.setState({ rollsList: [] });
-  }
+    const pageSize = 11;
 
+    firebase.database()
+    .ref('rollsList')
+    .orderByKey()
+    .endAt(this.state.rollsListLastId)
+    .limitToLast(pageSize)
+    .on('value', snapshot => {
+      const rolls = snapshot.val();
+      const rollsArray = [];
+
+      for (const roll in rolls) {
+        if (roll) {
+          rollsArray.push({
+            id: roll,
+            ...rolls[roll],
+          });
+        }
+      }
+
+      const rollsListLastPage = rollsArray.length < pageSize;
+      const rollsListLastId = rollsListLastPage === false ? rollsArray.splice(0, 1)[0].id : '__lastPage__';
+
+      this.setState(prevState => ({
+        rollsList: [
+          ...prevState.rollsList,
+          ...rollsArray.reverse(),
+        ],
+        rollsListLoading: false,
+        rollsListLastPage,
+        rollsListLastId,
+      }));
+    });
+  }
 
   submitRoll(rollData) {
     const dieTypes = ['d4', 'd6', 'd8', 'd10', 'd12', 'd20'];
@@ -64,6 +98,8 @@ class App extends Component {
         this.setState({
           rollsList: [],
           rollsListLoading: true,
+          rollsListLastPage: false,
+          rollsListLastId: '__firstPage__',
         }, () => {
           this.getRolls();
         });
@@ -112,6 +148,20 @@ class App extends Component {
             rollsList={this.state.rollsList}
             rollsListLoading={this.state.rollsListLoading}
           />
+
+          {this.state.rollsListLastPage === false ? (
+            <Row>
+              <Col className="text-center mt-3 mb-5">
+                <Button
+                  variant="primary"
+                  disabled={this.state.rollsListLoading}
+                  onClick={this.getRolls}
+                >
+                  {this.state.rollsListLoading ? 'Caricamento...' : 'Carica altri lanci'}
+                </Button>
+              </Col>
+            </Row>
+          ) : null}
         </Container>
       </>
     );
