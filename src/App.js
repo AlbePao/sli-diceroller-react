@@ -52,16 +52,22 @@ class App extends Component {
       }
     });
 
-
-    /**
-     * TODO: make a roll, save result to Firebase, clear form and getRolls()
-     * TODO: handle Firebase error and show error alert
-     */
     this.setState({
       rollResult: {
         rollData,
         rollResults,
       },
+    }, () => {
+      firebase.database()
+      .ref('rollsList')
+      .push(this.state.rollResult, () => {
+        this.setState({
+          rollsList: [],
+          rollsListLoading: true,
+        }, () => {
+          this.getRolls();
+        });
+      });
     });
   }
 
