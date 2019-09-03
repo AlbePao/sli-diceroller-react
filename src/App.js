@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import RollForm from './components/RollForm';
 import RollResult from './components/RollResult';
 import RollsTable from './components/RollsTable';
+import firebase from './firebase';
 
 class App extends Component {
   constructor() {
