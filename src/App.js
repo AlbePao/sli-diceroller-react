@@ -27,7 +27,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.getRolls();
+    firebase.auth()
+    .signInAnonymously()
+    .then(() => {
+      this.getRolls();
+    });
   }
 
   getRolls() {
