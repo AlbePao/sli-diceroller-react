@@ -149,9 +149,9 @@ class App extends Component {
             rollsListLoading={this.state.rollsListLoading}
           />
 
-          {this.state.rollsListLastPage === false ? (
-            <Row>
-              <Col className="text-center mt-3 mb-5">
+          <Row>
+            <Col className="text-center my-3">
+              {this.state.rollsListLastPage === false ? (
                 <Button
                   variant="primary"
                   disabled={this.state.rollsListLoading}
@@ -159,9 +159,9 @@ class App extends Component {
                 >
                   {this.state.rollsListLoading ? 'Caricamento...' : 'Carica altri lanci'}
                 </Button>
-              </Col>
-            </Row>
-          ) : null}
+              ) : null}
+            </Col>
+          </Row>
         </Container>
       </>
     );
