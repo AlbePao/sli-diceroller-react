@@ -139,11 +139,7 @@ class App extends Component {
         <Container className="mt-4">
           <h1 className="text-center">Lancio dadi GdR</h1>
           <hr />
-          <Row>
-            <Col>
-              <p>Lorem ipsum dolor sit amet, dice roller overview</p>
-            </Col>
-          </Row>
+
           <RollForm submitRoll={this.submitRoll} />
 
           <RollResult rollResult={this.state.rollResult} />
