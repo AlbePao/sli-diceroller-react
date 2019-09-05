@@ -149,8 +149,8 @@ class App extends Component {
             rollsListLoading={this.state.rollsListLoading}
           />
 
-          <Row>
-            <Col className="text-center my-3">
+          <Row className="text-center my-3">
+            <Col>
               {this.state.rollsListLastPage === false ? (
                 <Button
                   variant="primary"
