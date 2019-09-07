@@ -6,60 +6,75 @@ import Table from 'react-bootstrap/Table';
 import Spinner from 'react-bootstrap/Spinner';
 
 const RollsTable = props => (
-  <Row>
-    <Col>
-      <Table responsive hover className="mt-3">
-        <thead>
-          <tr>
-            <th>Data lancio</th>
-            <th>Motivo lancio</th>
-            <th>Utente</th>
-            <th>Personaggio</th>
-            <th>d4</th>
-            <th>d6</th>
-            <th>d8</th>
-            <th>d10</th>
-            <th>d12</th>
-            <th>d20</th>
-          </tr>
-        </thead>
-        <tbody>
+  <>
+    {props.rollsList.length === 0 ? (
+      <Row>
+        <Col className="text-center py-4">
           {props.rollsListLoading ? (
-            <tr>
-              <td colSpan="10" className="text-center py-4">
-                <Spinner animation="border" variant="primary" />
-              </td>
-            </tr>
+            <Spinner animation="border" variant="primary" />
           ) : (
-            props.rollsList.length === 0 ? (
-              <tr>
-                <td colSpan="10" className="text-center py-4">
-                  Nessun lancio di dadi presente
-                </td>
-              </tr>
-            ) : (
-              props.rollsList.map(
-                (roll, rollIndex) => (
-                  <tr key={rollIndex}>
-                    <td>{roll.rollData.date}</td>
-                    <td>{roll.rollData.reason}</td>
-                    <td>{roll.rollData.user}</td>
-                    <td>{roll.rollData.character}</td>
-                    <td>{roll.rollResults.d4.join(' ')}</td>
-                    <td>{roll.rollResults.d6.join(' ')}</td>
-                    <td>{roll.rollResults.d8.join(' ')}</td>
-                    <td>{roll.rollResults.d10.join(' ')}</td>
-                    <td>{roll.rollResults.d12.join(' ')}</td>
-                    <td>{roll.rollResults.d20.join(' ')}</td>
-                  </tr>
-                )
-              )
-            )
+            'Nessun lancio di dadi presente'
           )}
-        </tbody>
-      </Table>
-    </Col>
-  </Row>
+        </Col>
+      </Row>
+    ) : (
+      props.rollsList.map(
+        (roll, rollIndex) => (
+          <Row key={rollIndex}>
+            <Col lg="12">
+              <hr />
+            </Col>
+            <Col lg="8">
+              <Table responsive hover className="mt-3">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Dati lancio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Data lancio</th>
+                    <td>{roll.rollData.date}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Utente</th>
+                    <td>{roll.rollData.user}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Personaggio</th>
+                    <td>{roll.rollData.character}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Motivo lancio</th>
+                    <td>{roll.rollData.reason}</td>
+                  </tr>
+                </tbody>
+              </Table>
+            </Col>
+            <Col lg="4">
+              <Table responsive hover className="mt-3">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Risultati lanci</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.keys(roll.rollResults || {}).map(rollResultIndex => (
+                    <tr key={rollResultIndex}>
+                      <th scope="row">{rollResultIndex}</th>
+                      <td>{roll.rollResults[rollResultIndex].join(' ')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        )
+      )
+    )}
+  </>
 );
 
 RollsTable.propTypes = {
