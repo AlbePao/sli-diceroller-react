@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Alert from 'react-bootstrap/Alert';
+import uuidv1 from 'uuid';
 
 class RollResult extends Component {
   constructor(props) {
@@ -13,18 +14,28 @@ class RollResult extends Component {
 
   componentDidUpdate(prevProps) {
     const { rollResult } = this.props;
+    this.onUpdate(prevProps.rollResult, rollResult);
+  }
 
-    if (prevProps.rollResult !== rollResult && Object.keys(rollResult).length > 0) {
+  onUpdate(preRollResult, rollResult) {
+    if (preRollResult !== rollResult && Object.keys(rollResult).length > 0) {
       this.setState({ showAlert: true });
     }
   }
 
   render() {
-    if (!this.state.showAlert) {
+    const { showAlert } = this.state;
+
+    if (!showAlert) {
       return null;
     }
 
-    const { rollData, rollResults } = this.props.rollResult;
+    const {
+      rollResult: {
+        rollData,
+        rollResults,
+      },
+    } = this.props;
 
     return (
       <Alert
@@ -34,29 +45,24 @@ class RollResult extends Component {
       >
         <Alert.Heading>Lancio effettuato!</Alert.Heading>
         <p>
-          Lancio effettuato con successo. Hai ottenuto i seguenti
-          risultati
+          Lancio effettuato con successo. Hai ottenuto i seguenti risultati
         </p>
-        {Object.keys(rollResults).map(
-          (rollResult, rollResultIndex) => (
-            <p key={rollResultIndex}>
-              {rollResults[rollResult].map(
-                (dieResult, dieResultIndex) => (
-                  <span key={dieResultIndex} className="mx-1">
-                    <img
-                      src={`https://www.soniclegacy.it/wp-content/uploads/2019/08/${rollResult}_${dieResult}.gif`}
-                      alt={`d${rollResult}`}
-                    />
-                  </span>
-                ),
-              )}
-            </p>
-          ),
-        )}
+        {Object.keys(rollResults).map((rollResult) => (
+          <p key={uuidv1()}>
+            {rollResults[rollResult].map((dieResult) => (
+              <span key={uuidv1()} className="mx-1">
+                <img
+                  src={`https://www.soniclegacy.it/wp-content/uploads/2019/08/${rollResult}_${dieResult}.gif`}
+                  alt={`d${rollResult}`}
+                />
+              </span>
+            ))}
+          </p>
+        ))}
         <hr />
         <p>
-          Copia ed incolla il seguente messaggio nel topic della Zona delle
-          probabilit&aacute; del GdR
+          Copia ed incolla il seguente messaggio nel topic
+          della Zona delle probabilit&aacute; del GdR
         </p>
         <code
           className="p-3"
@@ -67,23 +73,18 @@ class RollResult extends Component {
           }}
         >
           {`${rollData.user} ha effettuato il seguente lancio\nMotivo del lancio: ${rollData.reason}`}
-          {Object.keys(rollResults).map(
-            (rollResult, rollResultIndex) => (
-              <React.Fragment key={rollResultIndex}>
-                {`\n\nLancio ${rollData[rollResult]}${rollResult}\n`}
-                {rollResults[rollResult].map(
-                  (dieResult, dieResultIndex) => (
-                    <React.Fragment key={dieResultIndex}>
-                      {dieResultIndex ? ' ' : ''}
-                      [IMG]
-                      {`https://www.soniclegacy.it/wp-content/uploads/2019/08/${rollResult}_${dieResult}.gif`}
-                      [/IMG]
-                    </React.Fragment>
-                  ),
-                )}
-              </React.Fragment>
-            ),
-          )}
+          {Object.keys(rollResults).map((rollResult) => (
+            <React.Fragment key={uuidv1()}>
+              {`\n\nLancio ${rollData[rollResult]}${rollResult}\n`}
+              {rollResults[rollResult].map((dieResult) => (
+                <React.Fragment key={uuidv1()}>
+                  [IMG]
+                  {`https://www.soniclegacy.it/wp-content/uploads/2019/08/${rollResult}_${dieResult}.gif`}
+                  [/IMG]
+                </React.Fragment>
+              ))}
+            </React.Fragment>
+          ))}
         </code>
       </Alert>
     );

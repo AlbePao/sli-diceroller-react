@@ -28,46 +28,44 @@ class App extends Component {
 
   componentDidMount() {
     firebase.auth()
-    .signInAnonymously()
-    .then(() => {
-      this.getRolls();
-    });
+      .signInAnonymously()
+      .then(() => {
+        this.getRolls();
+      });
   }
 
   getRolls() {
-    const pageSize = 11;
+    const pageSize = 10;
+    const { rollsListLastId } = this.state;
 
     firebase.database()
-    .ref('rollsList')
-    .orderByKey()
-    .endAt(this.state.rollsListLastId)
-    .limitToLast(pageSize)
-    .on('value', snapshot => {
-      const rolls = snapshot.val();
-      const rollsArray = [];
+      .ref('rollsList')
+      .orderByKey()
+      .endAt(rollsListLastId)
+      .limitToLast(pageSize)
+      .on('value', (snapshot) => {
+        const rolls = snapshot.val();
+        const rollsArray = [];
 
-      for (const roll in rolls) {
-        if (roll) {
+        Object.keys(rolls).forEach((roll) => {
           rollsArray.push({
             id: roll,
             ...rolls[roll],
           });
-        }
-      }
+        });
 
-      const rollsListLastPage = rollsArray.length < pageSize;
-      const rollsListLastId = rollsListLastPage === false ? rollsArray.splice(0, 1)[0].id : '__lastPage__';
+        const rollsListLastPage = rollsArray.length < pageSize;
 
-      this.setState(prevState => ({
-        rollsList: [
-          ...prevState.rollsList,
-          ...rollsArray.reverse(),
-        ],
-        rollsListLoading: false,
-        rollsListLastPage,
-        rollsListLastId,
-      }));
-    });
+        this.setState((prevState) => ({
+          rollsList: [
+            ...prevState.rollsList,
+            ...rollsArray.reverse(),
+          ],
+          rollsListLoading: false,
+          rollsListLastPage,
+          rollsListLastId: !rollsListLastPage ? rollsArray.splice(0, 1)[0].id : '__lastPage__',
+        }));
+      });
   }
 
   submitRoll(rollData) {
@@ -78,14 +76,13 @@ class App extends Component {
       rollResult: {},
     });
 
-    dieTypes.forEach(dieType => {
+    dieTypes.forEach((dieType) => {
       rollResults[dieType] = [];
 
       for (let i = 0; i < rollData[dieType]; i += 1) {
-        const roll =
-          Math.floor(
-            Math.random() * parseInt(dieType.substr(1), 10),
-          ) + 1;
+        const roll = Math.floor(
+          Math.random() * parseInt(dieType.substr(1), 10),
+        ) + 1;
         rollResults[dieType].push(roll);
       }
     });
@@ -96,22 +93,31 @@ class App extends Component {
         rollResults,
       },
     }, () => {
+      const { rollResult } = this.state;
+
       firebase.database()
-      .ref('rollsList')
-      .push(this.state.rollResult, () => {
-        this.setState({
-          rollsList: [],
-          rollsListLoading: true,
-          rollsListLastPage: false,
-          rollsListLastId: '__firstPage__',
-        }, () => {
-          this.getRolls();
+        .ref('rollsList')
+        .push(rollResult, () => {
+          this.setState({
+            rollsList: [],
+            rollsListLoading: true,
+            rollsListLastPage: false,
+            rollsListLastId: '__firstPage__',
+          }, () => {
+            this.getRolls();
+          });
         });
-      });
     });
   }
 
   render() {
+    const {
+      rollResult,
+      rollsList,
+      rollsListLoading,
+      rollsListLastPage,
+    } = this.state;
+
     return (
       <>
         <Navbar bg="light" expand="lg">
@@ -142,22 +148,22 @@ class App extends Component {
 
           <RollForm submitRoll={this.submitRoll} />
 
-          <RollResult rollResult={this.state.rollResult} />
+          <RollResult rollResult={rollResult} />
 
           <RollsTable
-            rollsList={this.state.rollsList}
-            rollsListLoading={this.state.rollsListLoading}
+            rollsList={rollsList}
+            rollsListLoading={rollsListLoading}
           />
 
           <Row className="text-center my-3">
             <Col>
-              {this.state.rollsListLastPage === false ? (
+              {!rollsListLastPage ? (
                 <Button
                   variant="primary"
-                  disabled={this.state.rollsListLoading}
+                  disabled={rollsListLoading}
                   onClick={this.getRolls}
                 >
-                  {this.state.rollsListLoading ? 'Caricamento...' : 'Carica altri lanci'}
+                  {rollsListLoading ? 'Caricamento...' : 'Carica altri lanci'}
                 </Button>
               ) : null}
             </Col>
