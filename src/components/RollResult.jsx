@@ -91,7 +91,22 @@ class RollResult extends Component {
 }
 
 RollResult.propTypes = {
-  rollResult: PropTypes.object.isRequired,
+  rollResult: PropTypes.shape({
+    rollData: PropTypes.shape({
+      date: PropTypes.string.isRequired,
+      user: PropTypes.string.isRequired,
+      character: PropTypes.string.isRequired,
+      reason: PropTypes.string.isRequired,
+    }),
+    rollResults: PropTypes.shape({
+      d4: PropTypes.number.isRequired,
+      d6: PropTypes.number.isRequired,
+      d8: PropTypes.number.isRequired,
+      d10: PropTypes.number.isRequired,
+      d12: PropTypes.number.isRequired,
+      d20: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
 };
 
 export default RollResult;

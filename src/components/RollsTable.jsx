@@ -78,7 +78,23 @@ const RollsTable = props => (
 );
 
 RollsTable.propTypes = {
-  rollsList: PropTypes.array.isRequired,
+  rollsList: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    rollData: PropTypes.shape({
+      date: PropTypes.string.isRequired,
+      user: PropTypes.string.isRequired,
+      character: PropTypes.string.isRequired,
+      reason: PropTypes.string.isRequired,
+    }),
+    rollResults: PropTypes.shape({
+      d4: PropTypes.number.isRequired,
+      d6: PropTypes.number.isRequired,
+      d8: PropTypes.number.isRequired,
+      d10: PropTypes.number.isRequired,
+      d12: PropTypes.number.isRequired,
+      d20: PropTypes.number.isRequired,
+    }),
+  })).isRequired,
   rollsListLoading: PropTypes.bool.isRequired,
 };
 
