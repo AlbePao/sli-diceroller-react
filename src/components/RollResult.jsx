@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Alert from 'react-bootstrap/Alert';
 import uuidv1 from 'uuid';
 
+const getDieUrl = (die, result) => `${window.location.origin}/dice/${die}_${result}.gif`;
+
 class RollResult extends Component {
   constructor(props) {
     super(props);
@@ -52,7 +54,7 @@ class RollResult extends Component {
             {rollResults[rollResult].map((dieResult) => (
               <span key={uuidv1()} className="mx-1">
                 <img
-                  src={`https://www.soniclegacy.it/wp-content/uploads/2019/08/${rollResult}_${dieResult}.gif`}
+                  src={getDieUrl(rollResult, dieResult)}
                   alt={`d${rollResult}`}
                 />
               </span>
@@ -79,7 +81,7 @@ class RollResult extends Component {
               {rollResults[rollResult].map((dieResult) => (
                 <React.Fragment key={uuidv1()}>
                   [IMG]
-                  {`https://www.soniclegacy.it/wp-content/uploads/2019/08/${rollResult}_${dieResult}.gif`}
+                  {getDieUrl(rollResult, dieResult)}
                   [/IMG]
                 </React.Fragment>
               ))}
