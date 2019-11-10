@@ -80,7 +80,7 @@ const RollsTable = ({
 
 RollsTable.propTypes = {
   rollsList: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     rollData: PropTypes.shape({
       date: PropTypes.string.isRequired,
       user: PropTypes.string.isRequired,
@@ -88,12 +88,12 @@ RollsTable.propTypes = {
       reason: PropTypes.string.isRequired,
     }),
     rollResults: PropTypes.shape({
-      d4: PropTypes.number.isRequired,
-      d6: PropTypes.number.isRequired,
-      d8: PropTypes.number.isRequired,
-      d10: PropTypes.number.isRequired,
-      d12: PropTypes.number.isRequired,
-      d20: PropTypes.number.isRequired,
+      d4: PropTypes.array,
+      d6: PropTypes.array,
+      d8: PropTypes.array,
+      d10: PropTypes.array,
+      d12: PropTypes.array,
+      d20: PropTypes.array,
     }),
   })).isRequired,
   rollsListLoading: PropTypes.bool.isRequired,
