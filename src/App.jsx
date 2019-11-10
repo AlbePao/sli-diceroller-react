@@ -36,13 +36,13 @@ class App extends Component {
 
   getRolls() {
     const pageSize = 10;
-    const { rollsListLastId } = this.state;
+    let { rollsListLastId } = this.state;
 
     firebase.database()
       .ref('rollsList')
       .orderByKey()
       .endAt(rollsListLastId)
-      .limitToLast(pageSize)
+      .limitToLast(pageSize + 1)
       .on('value', (snapshot) => {
         const rolls = snapshot.val();
         const rollsArray = [];
@@ -56,6 +56,10 @@ class App extends Component {
 
         const rollsListLastPage = rollsArray.length < pageSize;
 
+        if (rollsListLastId && !rollsListLastPage) {
+          rollsListLastId = rollsArray.shift().id || '__lastPage__';
+        }
+
         this.setState((prevState) => ({
           rollsList: [
             ...prevState.rollsList,
@@ -63,7 +67,7 @@ class App extends Component {
           ],
           rollsListLoading: false,
           rollsListLastPage,
-          rollsListLastId: !rollsListLastPage ? rollsArray.splice(0, 1)[0].id : '__lastPage__',
+          rollsListLastId,
         }));
       });
   }
