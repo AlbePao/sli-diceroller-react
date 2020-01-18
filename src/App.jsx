@@ -47,6 +47,15 @@ class App extends Component {
         const rolls = snapshot.val();
         const rollsArray = [];
 
+        if (!rolls) {
+          this.setState({
+            rollsListLoading: false,
+            rollsListLastPage: true,
+          });
+
+          return;
+        }
+
         Object.keys(rolls).forEach((roll) => {
           rollsArray.push({
             id: roll,
