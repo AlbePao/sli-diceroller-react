@@ -27,7 +27,7 @@ const RollsTable = ({
             <hr />
           </Col>
           <Col lg="8">
-            <Table responsive hover className="mt-3">
+            <Table responsive striped hover className="mt-3">
               <thead>
                 <tr>
                   <th>#</th>
@@ -55,7 +55,7 @@ const RollsTable = ({
             </Table>
           </Col>
           <Col lg="4">
-            <Table responsive hover className="mt-3">
+            <Table responsive striped hover className="mt-3">
               <thead>
                 <tr>
                   <th>#</th>
