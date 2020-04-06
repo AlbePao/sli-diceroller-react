@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Alert from 'react-bootstrap/Alert';
-import uuidv1 from 'uuid';
+import { v1 as uuidv1 } from 'uuid';
 
 const getDieUrl = (die, result) => `${window.location.origin}/dice/${die}_${result}.gif`;
 
