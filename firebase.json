@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "sli-diceroller-react",
     "public": "build",
     "ignore": [
       "firebase.json",
