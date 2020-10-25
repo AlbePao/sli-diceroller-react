@@ -13,7 +13,6 @@
 
 # firebase
 /.firebase
-.firebaserc
 
 # misc
 .DS_Store
