@@ -136,7 +136,7 @@ class App extends Component {
         <Navbar bg="light" expand="lg">
           <Navbar.Brand>
             <img
-              src="/logo.png"
+              src="/logo.svg"
               height="30"
               className="d-inline-block align-top"
               alt="Sonic Legacy Italia Logo"
